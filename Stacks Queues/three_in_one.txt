@@ -1,0 +1,7 @@
+Q: Describe how you could use a single array to implement three stacks.
+
+A: We would need to come up with a way to split up the array into 3 equal parts.
+However, whenever we insert or remove an item into one stack, we have to be 
+mindful of the other 2 stacks. This may lead us to maintain "null" values within the
+array.
+
