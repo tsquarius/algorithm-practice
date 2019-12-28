@@ -81,9 +81,11 @@ function pow(base, exponent) {
     return 1 / pow(base, Math.abs(exponent));
   } else {
     if (isEven(exponent)) {
-      return pow(base,exponent/2)*pow(base, exponent/2);
+      return pow(base, exponent / 2) * pow(base, exponent / 2);
     } else {
-      return base * pow(base, (exponent-1)/2)*pow(base, (exponent-1)/2);
+      return (
+        base * pow(base, (exponent - 1) / 2) * pow(base, (exponent - 1) / 2)
+      );
     }
   }
 }
@@ -174,9 +176,19 @@ function fileFinder(directories, targetFile) {
   if (!directories) return false;
 
   let paths = Object.keys(directories);
-  return paths.some(path => 
-    path === targetFile || fileFinder(directories[path], targetFile)
+  return paths.some(
+    path => path === targetFile || fileFinder(directories[path], targetFile)
   );
+}
+
+function fileFinder2(directories, targetFile) {
+  for (let key in directories) {
+    if (key === targetFile || fileFinder2(directories[key], targetFile)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 // Write another function, pathFinder(directories, targetFile), that returns the path that contains the targetFile.
@@ -188,7 +200,19 @@ function fileFinder(directories, targetFile) {
 // pathFinder(desktop, 'trixie_lou.jpeg'));     // => '/images/pets/trixie_lou.jpeg'
 // pathFinder(desktop, 'everlong.flac'));       // => '/music/genres/rock/everlong.flac'
 // pathFinder(desktop, 'honeybadger.png'));     // => null
-function pathFinder(directories, targetFile) {}
+function pathFinder(directories, targetFile) {
+  for (let key in directories) {
+    if (key === targetFile) {
+      return "/" + targetFile;
+    }
+
+    if (pathFinder(directories[key], targetFile)) {
+      return key + pathFinder(directories[key], targetFile);
+    }
+  }
+
+  return null;
+}
 
 module.exports = {
   lucasNumber,
