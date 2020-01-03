@@ -13,17 +13,21 @@
 // Output: 0
 // Explanation: the amount of 3 cannot be made up just with coins of 2.
 
-var change = function(amount, coins, memo = {}) {
-  if (!coins.some(coin => coin <= amount)) return memo;
+var change = function(amount, coins, memo={}) {
+  let key = amount + '-' + coins;
+  if (key in memo) return memo[key];
+  if (amount === 0) return 1;
 
+  let currentCoin = coins[coins.length -1];
 
-  for (let i in coins) {
-    if (coins[i] > amount) continue;
-    if (coins[i] === amount) return {};
-
+  let total = 0;
+  for (let qty=0; qty * currentCoin <= amount; qty++) {
+    total += change(amount - qty * currentCoin, coins.slice(0,-1), memo);
   }
 
-  return memo;
+  memo[key] = total;
+
+  return memo[key];
 
 };
 
